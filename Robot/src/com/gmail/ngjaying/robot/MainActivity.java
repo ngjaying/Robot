@@ -1,6 +1,7 @@
 package com.gmail.ngjaying.robot;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,9 +44,13 @@ public class MainActivity extends Activity {
     	if(!mStarted){
     		startButton.setText(R.string.main_stop_button);
         	audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+        	if(!ContentResolver.getMasterSyncAutomatically())
+        		ContentResolver.setMasterSyncAutomatically(true);
     	}else{
     		startButton.setText(R.string.main_start_button);
         	audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+        	if(ContentResolver.getMasterSyncAutomatically())
+        		ContentResolver.setMasterSyncAutomatically(false);
     	}
     	mStarted = !mStarted;
     }
