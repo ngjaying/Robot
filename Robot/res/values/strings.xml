@@ -1,9 +1,9 @@
 <resources>
 
     <string name="app_name">Robot</string>
-    <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">Settings</string>
+    <string name="title_activity_main">Robot</string>
     <string name="main_start_button">Start</string>
+    <string name="main_stop_button">Stop</string>
 
 </resources>

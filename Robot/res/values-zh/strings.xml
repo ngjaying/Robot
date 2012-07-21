@@ -1,0 +1,9 @@
+<resources>
+
+    <string name="app_name">机器人</string>
+    <string name="menu_settings">设置</string>
+    <string name="title_activity_main">机器人</string>
+    <string name="main_start_button">开始</string>
+    <string name="main_stop_button">结束</string>
+
+</resources>
