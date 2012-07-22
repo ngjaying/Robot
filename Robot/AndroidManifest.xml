@@ -1,7 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gmail.ngjaying.robot"
+<manifest package="com.gmail.ngjaying.robot"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -14,7 +13,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".app.MainActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver android:name=".model.conditions.AlarmReceiver" android:enabled="true" android:process=":remote"></receiver>
     </application>
 
 </manifest>
