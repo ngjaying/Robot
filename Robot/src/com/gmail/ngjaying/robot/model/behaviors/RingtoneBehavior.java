@@ -1,4 +1,4 @@
-package com.gmail.ngjaying.robot.model.conditions;
+package com.gmail.ngjaying.robot.model.behaviors;
 
 import android.content.Context;
 import android.media.AudioManager;

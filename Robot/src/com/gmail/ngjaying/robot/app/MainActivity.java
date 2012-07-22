@@ -16,8 +16,10 @@ import com.gmail.najaying.robot.utils.Constants;
 import com.gmail.ngjaying.robot.R;
 import com.gmail.ngjaying.robot.model.IBehavior;
 import com.gmail.ngjaying.robot.model.ICondition;
+import com.gmail.ngjaying.robot.model.behaviors.AutoSyncBehavior;
+import com.gmail.ngjaying.robot.model.behaviors.RingtoneBehavior;
 import com.gmail.ngjaying.robot.model.conditions.AlarmCondition;
-import com.gmail.ngjaying.robot.model.conditions.RingtoneBehavior;
+import com.gmail.ngjaying.robot.model.conditions.WifiCondition;
 
 public class MainActivity extends Activity {
 	private static final String HAS_STARTED = "hasStarted";
@@ -54,39 +56,39 @@ public class MainActivity extends Activity {
     public void startRunning(View view){
     	Log.v(Constants.MESSAGE_TAG, "button clicked");
     	Button startButton = (Button) view;
-    	//TODO the behaviors must be set through UI. Currently, this is the 2 behaviors I need. We also need a serialized method to save these.
-    	Calendar cal = Calendar.getInstance();
-    	cal.set(Calendar.HOUR_OF_DAY, 9);
-    	cal.set(Calendar.MINUTE, 0);
-    	ICondition condition1 = new AlarmCondition(cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY);
-    	cal.set(Calendar.HOUR_OF_DAY, 18);
-    	ICondition condition2 = new AlarmCondition(cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY);
-    	cal.set(Calendar.HOUR_OF_DAY, 13);
-    	cal.set(Calendar.MINUTE, 41);
-    	ICondition condition3 = new AlarmCondition(cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY);
-    	mConditions.add(condition1);
-    	mConditions.add(condition2);
-    	mConditions.add(condition3);
-    	
-    	IBehavior behavior1 = new RingtoneBehavior(AudioManager.RINGER_MODE_VIBRATE);
-    	IBehavior behavior2 = new RingtoneBehavior(AudioManager.RINGER_MODE_NORMAL);
-//    	IBehavior behavior2 = new AbstractBehavior(){
-//
-//			@Override
-//			public void execute() {
-//				Log.v(Constants.MESSAGE_TAG, "Auto sync behavior triggered");
-//				if(!ContentResolver.getMasterSyncAutomatically())
-//	        		ContentResolver.setMasterSyncAutomatically(true);
-//			}
-//    		
-//    	};
-    	mBehaviors.add(behavior1);
-    	mBehaviors.add(behavior2);
-    	
-    	condition3.addBehavior(behavior1);
-    	condition3.setup(this);
     	
     	if(!mStarted){
+    		//TODO the behaviors must be set through UI. Currently, this is the 2 behaviors I need. We also need a serialized method to save these.
+        	Calendar cal = Calendar.getInstance();
+        	cal.set(Calendar.HOUR_OF_DAY, 9);
+        	cal.set(Calendar.MINUTE, 0);
+        	ICondition condition1 = new AlarmCondition(cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY);
+        	cal.set(Calendar.HOUR_OF_DAY, 16);
+        	ICondition condition2 = new AlarmCondition(cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY);
+        	ICondition condition3 = new WifiCondition(true);
+        	ICondition condition4 = new WifiCondition(false);
+        	mConditions.add(condition1);
+        	mConditions.add(condition2);
+        	
+        	IBehavior behavior1 = new RingtoneBehavior(AudioManager.RINGER_MODE_VIBRATE);
+        	IBehavior behavior2 = new RingtoneBehavior(AudioManager.RINGER_MODE_NORMAL);
+        	IBehavior behavior3 = new AutoSyncBehavior(true);
+        	IBehavior behavior4 = new AutoSyncBehavior(false);
+        	mBehaviors.add(behavior1);
+        	mBehaviors.add(behavior2);
+        	mBehaviors.add(behavior3);
+        	mBehaviors.add(behavior4);
+        	//Setup conditions
+        	condition1.addBehavior(behavior1);
+        	condition1.setup(this);
+        	condition2.addBehavior(behavior2);
+        	condition2.setup(this);
+        	condition3.addBehavior(behavior3);
+        	condition3.setup(this);
+        	condition4.addBehavior(behavior4);
+        	condition4.setup(this);
+        	
+        	
     		startButton.setText(R.string.main_stop_button);
     	}else{
     		//TODO stop all services here

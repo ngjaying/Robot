@@ -1,6 +1,7 @@
 package com.gmail.ngjaying.robot.model.conditions;
 
-import java.util.ArrayList;
+
+import java.util.Calendar;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -9,18 +10,21 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.gmail.najaying.robot.utils.Constants;
-import com.gmail.ngjaying.robot.model.IBehavior;
-import com.gmail.ngjaying.robot.model.ICondition;
+import com.gmail.ngjaying.robot.model.AbstractCondition;
+import com.gmail.ngjaying.robot.model.receivers.AlarmReceiver;
 
-public class AlarmCondition implements ICondition {
+public class AlarmCondition extends AbstractCondition {
 
 	private long mTrigerAtMillis;
 	private long mIntervalMillis;
-	private ArrayList<IBehavior> mBehaviors;
 	private PendingIntent mIntent;
 	
 	public AlarmCondition(long trigerAtMillis, long intervalMillis) {
-		this.mTrigerAtMillis = trigerAtMillis;
+		long currentMillis = Calendar.getInstance().getTimeInMillis();
+		if(trigerAtMillis > currentMillis)
+			this.mTrigerAtMillis = trigerAtMillis;
+		else
+			this.mTrigerAtMillis = trigerAtMillis + intervalMillis;
 		this.mIntervalMillis = intervalMillis;
 	}
 
@@ -34,7 +38,7 @@ public class AlarmCondition implements ICondition {
 		// Get the AlarmManager service
 		AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
 		if(mIntervalMillis>0)
-			am.setRepeating(AlarmManager.RTC_WAKEUP, mTrigerAtMillis, mIntervalMillis, mIntent);	
+			am.setInexactRepeating(AlarmManager.RTC_WAKEUP, mTrigerAtMillis, mIntervalMillis, mIntent);	
 		else
 			am.set(AlarmManager.RTC_WAKEUP, mTrigerAtMillis, mIntent);
 			
@@ -44,17 +48,6 @@ public class AlarmCondition implements ICondition {
 	public void cancel(Context ctx) {
 		AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
 		am.cancel(mIntent);
-	}
-
-	@Override
-	public ArrayList<IBehavior> getBehaviors() {
-		return mBehaviors;
-	}
-	
-	@Override
-	public void addBehavior(IBehavior behavior){
-		if(null == mBehaviors) mBehaviors = new ArrayList<IBehavior>();
-		mBehaviors.add(behavior);
 	}
 
 }
